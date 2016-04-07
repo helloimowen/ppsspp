@@ -1297,6 +1297,9 @@ void TextureCacheVulkan::SetTexture(VulkanPushBuffer *uploadBuffer) {
 	lastBoundTexture = entry->vkTex;
 
 	if (entry->vkTex) {
+		if (replaceImages) {
+			entry->vkTex->texture_->Transition(vulkan_->GetInitCommandBuffer(), VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL);
+		}
 		// Upload the texture data.
 		for (int i = 0; i <= maxLevel; i++) {
 			int mipWidth = gstate.getTextureWidth(i) * scaleFactor;
